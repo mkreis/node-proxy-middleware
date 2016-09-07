@@ -54,6 +54,7 @@ module.exports = function proxyMiddleware(options) {
     }
 
     var myReq = request(opts, function (myRes) {
+      myRes.setEncoding('utf8');
       var statusCode = myRes.statusCode
         , headers = myRes.headers
         , location = headers.location;
@@ -64,6 +65,7 @@ module.exports = function proxyMiddleware(options) {
       }
       applyViaHeader(myRes.headers, opts, myRes.headers);
       rewriteCookieHosts(myRes.headers, opts, myRes.headers, req);
+      
       resp.writeHead(myRes.statusCode, myRes.headers);
       myRes.on('error', function (err) {
         next(err);
